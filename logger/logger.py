@@ -1,4 +1,4 @@
-import time
+import time, json
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -6,8 +6,12 @@ app = Flask(__name__)
 @app.route("/log", methods=["POST"])
 def log():
     data = request.json
-    with open("logs.txt", "a") as f:
-        f.write(str(data) + "\n")
+    entry = {
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "log": data
+    }
+    with open("/shared/logs.txt", "a") as f:   # <-- write to volume
+        f.write(json.dumps(entry) + "\n")
     return {"status": "logged"}
 
 if __name__ == "__main__":

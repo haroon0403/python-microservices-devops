@@ -14,6 +14,8 @@ services:
 
   backend:
     build: ./backend
+    volumes:
+      - shared-data:/shared
     environment:
       DB_HOST: db
       DB_NAME: appdb
@@ -35,11 +37,14 @@ services:
 
   logger:
     build: ./logger
+    volumes:
+      - shared-data:/shared
     ports:
       - "6000:6000"
     depends_on:
       - backend
 
 volumes:
+  shared-data:
   db_data:
 
