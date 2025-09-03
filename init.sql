@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 INSERT INTO messages (message) VALUES
-('Hello from Team'),
+('Hello Team welcome to Devops World'),
 ('DevOps + MLOps Assignment'),
 ('CI/CD with GitHub Actions'),
 ('Deployed with Docker & Terraform'),
