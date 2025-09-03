@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: apppass
+      POSTGRES_DB: appdb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  backend:
+    image: 0403456/backend:latest
+    volumes:
+      - shared-data:/shared
+    environment:
+      DB_HOST: db
+      DB_NAME: appdb
+      DB_USER: appuser
+      DB_PASS: apppass
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+
+  frontend:
+    image: 0403456/frontend:latest
+    environment:
+      BACKEND_URL: http://backend:5000/api/data
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+  logger:
+    image: 0403456/logger:latest
+    volumes:
+      - shared-data:/shared
+    ports:
+      - "6000:6000"
+    depends_on:
+      - backend
+
+volumes:
+  shared-data:
+  db_data:
