@@ -29,3 +29,25 @@ jobs:
 
       - name: Build and Push Logger
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/logger:latest ./logger && docker push ${{ secrets.DOCKERHUB_USERNAME }}/logger:latest
+
+      - name: Send Email Notification
+        if: always()   # ensures email is sent even if job fails
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_PASS }}
+          subject: "GitHub Actions CI/CD - ${{ job.status }}"
+          body: |
+            Hello,
+
+            The CI/CD pipeline has finished with status: ${{ job.status }}.
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+
+            Regards,
+            GitHub Actions
+          to: yourmail@gmail.com
+          from: GitHub Actions <${{ secrets.GMAIL_USER }}>
