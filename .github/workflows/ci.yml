@@ -39,21 +39,16 @@ jobs:
           username: ${{ secrets.GMAIL_USER }}
           password: ${{ secrets.GMAIL_PASS }}
           subject: "GitHub Actions CI/CD - ${{ job.status }}"
-          content_type: text/html
           body: |
-            <h2 style="color:${{ job.status == 'success' && 'green' || 'red' }};">
-              CI/CD Pipeline - ${{ job.status }}
-            </h2>
-            <p><b>Repository:</b> ${{ github.repository }}</p>
-            <p><b>Branch:</b> ${{ github.ref_name }}</p>
-            <p><b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">
-              View Commit</a></p>
-            <p><b>Triggered by:</b> ${{ github.actor }}</p>
-            <p><b>Workflow:</b> ${{ github.workflow }}</p>
-            <p><b>Run Link:</b> 
-              <a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">
-                View Workflow Run
-              </a>
-            </p>
+            Hello,
+
+            The CI/CD pipeline has finished with status: ${{ job.status }}.
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Actor: ${{ github.actor }}
+
+            Regards,
+            GitHub Actions
           to: yourmail@gmail.com
           from: GitHub Actions <${{ secrets.GMAIL_USER }}>
